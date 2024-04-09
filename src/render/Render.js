@@ -32,6 +32,20 @@ var Mouse = require('../core/Mouse');
                                       || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
     }
 
+    if (!_requestAnimationFrame) {
+        var _frameTimeout;
+
+        _requestAnimationFrame = function(callback){ 
+            _frameTimeout = setTimeout(function() { 
+                callback(Common.now()); 
+            }, 1000 / 60);
+        };
+
+        _cancelAnimationFrame = function() {
+            clearTimeout(_frameTimeout);
+        };
+    }
+
     Render._goodFps = 30;
     Render._goodDelta = 1000 / 60;
 
